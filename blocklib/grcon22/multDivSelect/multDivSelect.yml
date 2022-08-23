@@ -1,0 +1,37 @@
+module: grcon22
+block: multDivSelect
+label: Mult/Div Select
+blocktype: sync_block
+
+typekeys:
+  - id: T
+    type: class
+    options: 
+        - cf32
+        - rf32
+
+# Example Parameters
+parameters:
+-   id: select
+    label: Select (M:true, D:false)
+    dtype: bool
+    settable: true
+
+# Example Ports
+ports:
+-   domain: stream
+    id: in
+    direction: input
+    type: typekeys/T
+    multiplicity: '2'
+
+-   domain: stream
+    id: out
+    direction: output
+    type: typekeys/T
+
+implementations:
+-   id: cpu
+# -   id: cuda
+
+file_format: 1
