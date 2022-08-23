@@ -93,6 +93,23 @@ blocks:
     coordinate: [128, 324.0]
     rotation: 0
     state: true
+- name: blocks_null_sink_0
+  id: blocks_null_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    impl: cpu
+    itemsize: '0'
+    nports: '1'
+    showports: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [640, 376.0]
+    rotation: 0
+    state: disabled
 - name: grcon22_multDivSelect_0
   id: grcon22_multDivSelect
   parameters:
@@ -100,10 +117,10 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    impl: cpu
+    impl: cuda
     maxoutbuf: '0'
     minoutbuf: '0'
-    select: 'False'
+    select: 'True'
     showports: 'False'
   states:
     bus_sink: false
@@ -157,9 +174,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [896, 236.0]
+    coordinate: [920, 228.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: streamops_head_0
   id: streamops_head
   parameters:
@@ -178,11 +195,12 @@ blocks:
     bus_structure: null
     coordinate: [672, 228.0]
     rotation: 0
-    state: true
+    state: enabled
 
 connections:
 - [analog_sig_source_0, '0', grcon22_multDivSelect_0, '0']
 - [analog_sig_source_0_0, '0', grcon22_multDivSelect_0, '1']
+- [grcon22_multDivSelect_0, '0', blocks_null_sink_0, '0']
 - [grcon22_multDivSelect_0, '0', streamops_head_0, '0']
 - [streamops_head_0, '0', snk, '0']
 

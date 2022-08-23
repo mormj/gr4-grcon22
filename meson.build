@@ -14,6 +14,7 @@ py3 = py3_inst
 pybind11_dep = dependency('pybind11', required : get_option('enable_python'))
 json_dep = dependency('nlohmann_json')
 
+
 if (get_option('enable_testing'))
     TEST_ENV = environment()
     TEST_ENV.prepend('LD_LIBRARY_PATH', 
@@ -30,6 +31,8 @@ prefix = '\ '.join(prefix_parts)
 cuda_available = add_languages('cuda', required : false)
 IMPLEMENT_CUDA = cuda_available and get_option('enable_cuda')
 IMPLEMENT_CPU = true
+
+cuda_dep = dependency('cuda', version : '>=10.1', required : IMPLEMENT_CUDA, modules : ['cufft'])
 
 ###############################################################################
 # IF Out of Tree Module
@@ -48,6 +51,11 @@ volk_dep = dependency('volk', version : '>=2.2')
 fmt_dep = dependency('fmt', method: 'cmake', modules: ['fmt::fmt'])
 pmtf_dep = dependency('pmtf', version : '>= 0.0.2')
 gnuradio_gr_dep = dependency('gnuradio-runtime')
+
+if IMPLEMENT_CUDA
+  libcusp = subproject('cusp')
+  cusp_dep = libcusp.get_variable('cusp_dep')
+endif
 
 run_command('python3', join_paths(SCRIPTS_DIR,'gen_meson.py'), 
   join_paths(meson.project_source_root(),'blocklib'), check: true)

@@ -3,8 +3,8 @@ grcon22_deps += [gnuradio_gr_dep, volk_dep, fmt_dep, pmtf_dep, python3_embed_dep
 
 block_cpp_args = ['-DHAVE_CPU']
 
-# if cuda_dep.found() and get_option('enable_cuda')
-#     block_cpp_args += '-DHAVE_CUDA'
+if IMPLEMENT_CUDA
+    block_cpp_args += '-DHAVE_CUDA'
 
 #     gnuradio_blocklib_grcon22_cu = library('gnuradio-blocklib-grcon22-cu', 
 #         grcon22_cu_sources, 
@@ -16,9 +16,9 @@ block_cpp_args = ['-DHAVE_CPU']
 #                         link_with : gnuradio_blocklib_grcon22_cu,
 #                         dependencies : cuda_dep)
 
-#     grcon22_deps += [gnuradio_blocklib_grcon22_cu_dep, cuda_dep]
+    grcon22_deps += [cuda_dep, cusp_dep]
 
-# endif
+endif
 
 incdir = include_directories(['../include/gnuradio/grcon22','../include'])
 gnuradio_blocklib_grcon22_lib = library('gnuradio-blocklib-grcon22', 
