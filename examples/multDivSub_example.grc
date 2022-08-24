@@ -117,7 +117,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    impl: cuda
+    impl: numpy
     maxoutbuf: '0'
     minoutbuf: '0'
     select: 'True'

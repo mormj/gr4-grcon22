@@ -49,7 +49,7 @@ class multDivSub_example(gr.flowgraph):
         ##################################################
         self.streamops_head_0 = streamops.head( 1000,0, impl=streamops.head.cpu)
         self.snk = blocks.vector_sink_f( 1,1024, impl=blocks.vector_sink_f.cpu)
-        self.grcon22_multDivSelect_0 = grcon22.multDivSelect_ff( True, impl=grcon22.multDivSelect_ff.cuda)
+        self.grcon22_multDivSelect_0 = grcon22.multDivSelect_ff( True, impl=grcon22.multDivSelect_ff.numpy)
         self.analog_sig_source_0_0 = analog.sig_source_f( samp_rate,analog.waveform_t.CONSTANT,1000,17.0,0,0, impl=analog.sig_source_f.cpu)
         self.analog_sig_source_0 = analog.sig_source_f( samp_rate,analog.waveform_t.SIN,1000,1.0,0,0, impl=analog.sig_source_f.cpu)
 
@@ -57,10 +57,10 @@ class multDivSub_example(gr.flowgraph):
         ##################################################
         # Connections
         ##################################################
+        self.connect((self.analog_sig_source_0, 0), (self.grcon22_multDivSelect_0, 0))
+        self.connect((self.analog_sig_source_0_0, 0), (self.grcon22_multDivSelect_0, 1))
+        self.connect((self.grcon22_multDivSelect_0, 0), (self.streamops_head_0, 0))
         self.connect((self.streamops_head_0, 0), (self.snk, 0))
-        self.connect((self.analog_sig_source_0, 0), (self.grcon22_multDivSelect_0, 0)).set_custom_buffer(gr.buffer_cuda_properties.make(gr.buffer_cuda_type.H2D))
-        self.connect((self.analog_sig_source_0_0, 0), (self.grcon22_multDivSelect_0, 1)).set_custom_buffer(gr.buffer_cuda_properties.make(gr.buffer_cuda_type.H2D))
-        self.connect((self.grcon22_multDivSelect_0, 0), (self.streamops_head_0, 0)).set_custom_buffer(gr.buffer_cuda_properties.make(gr.buffer_cuda_type.D2H))
 
 
     def get_samp_rate(self):

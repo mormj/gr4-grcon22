@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 from gnuradio import gr_unittest, gr, blocks, grcon22
-
-class multDivSelect_ff(gr.sync_block):
+from gnuradio.grcon22.numpy import multDivSelect_ff
+class multDivSelect_ff_scratch(gr.sync_block):
     def __init__(self, select):
         gr.sync_block.__init__(
             self,
@@ -55,7 +55,7 @@ class test_multdivsel(gr_unittest.TestCase):
         src1 = blocks.vector_source_f(indata_1, False)
         src2 = blocks.vector_source_f(indata_2, False)
 
-        blk = multDivSelect_ff(True)
+        blk = multDivSelect_ff_scratch(True)
         snk = blocks.vector_sink_f()
         
 
@@ -69,6 +69,56 @@ class test_multdivsel(gr_unittest.TestCase):
         self.assertSequenceEqual(expected_output, snk.data())
 
     def test_div_f_python(self):
+        nsamples = 10000
+
+        indata_1 = list(range(100)) * (nsamples // 100)
+        indata_2 = list(range(1,101)) * (nsamples // 100)
+
+        expected_output = [z[0] / z[1] for z in zip(indata_1, indata_2)]
+
+        src1 = blocks.vector_source_f(indata_1, False)
+        src2 = blocks.vector_source_f(indata_2, False)
+
+        blk = multDivSelect_ff_scratch(True)
+        blk.set_select(False)        
+        snk = blocks.vector_sink_f()
+        
+
+        self.fg.connect(src1, 0, blk, 0)
+        self.fg.connect(src2, 0, blk, 1)
+        self.fg.connect(blk, 0, snk, 0)
+
+        self.fg.start()
+        self.fg.wait()
+        
+        self.assertFloatTuplesAlmostEqual(expected_output, snk.data(), places=7)
+
+
+    def test_mult_f_python_extend(self):
+        nsamples = 10000
+
+        indata_1 = list(range(100)) * (nsamples // 100)
+        indata_2 = list(range(100)) * (nsamples // 100)
+
+        expected_output = [z[0] * z[1] for z in zip(indata_1, indata_2)]
+
+        src1 = blocks.vector_source_f(indata_1, False)
+        src2 = blocks.vector_source_f(indata_2, False)
+
+        blk = multDivSelect_ff(True)
+        snk = blocks.vector_sink_f()
+        
+
+        self.fg.connect(src1, 0, blk, 0)
+        self.fg.connect(src2, 0, blk, 1)
+        self.fg.connect(blk, 0, snk, 0)
+
+        self.fg.start()
+        self.fg.wait()
+        
+        self.assertSequenceEqual(expected_output, snk.data())
+
+    def test_div_f_python_extend(self):
         nsamples = 10000
 
         indata_1 = list(range(100)) * (nsamples // 100)
