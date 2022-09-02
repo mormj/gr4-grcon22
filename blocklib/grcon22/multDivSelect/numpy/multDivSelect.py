@@ -1,7 +1,7 @@
 from gnuradio import grcon22
 from gnuradio import gr
 
-class multDivSelect_ff():
+class multDivSelect_base():
     def __init__(self, blk, **kwargs):
         self._blk = blk
     
@@ -22,3 +22,22 @@ class multDivSelect_ff():
 
         out.produce(noutput_items)
         return gr.work_return_t.OK 
+class multDivSelect_cc(multDivSelect_base):
+    def __init__(self, blk, **kwargs):
+        super().__init__(blk, **kwargs)
+
+
+class multDivSelect_ff(multDivSelect_base):
+    def __init__(self, blk, **kwargs):
+        super().__init__(blk, **kwargs)
+    
+
+class multDivSelect_ii(multDivSelect_base):
+    def __init__(self, blk, **kwargs):
+        super().__init__(blk, **kwargs)
+    
+
+class multDivSelect_ss(multDivSelect_base):
+    def __init__(self, blk, **kwargs):
+        super().__init__(blk, **kwargs)
+    
