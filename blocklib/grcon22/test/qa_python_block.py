@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from gnuradio import gr_unittest, gr, blocks, grcon22
-from gnuradio.grcon22.numpy import multDivSelect_ff
 class multDivSelect_ff_scratch(gr.sync_block):
     def __init__(self, select):
         gr.sync_block.__init__(
@@ -105,7 +104,7 @@ class test_multdivsel(gr_unittest.TestCase):
         src1 = blocks.vector_source_f(indata_1, False)
         src2 = blocks.vector_source_f(indata_2, False)
 
-        blk = multDivSelect_ff(True)
+        blk = grcon22.multDivSelect_ff(True, impl=grcon22.multDivSelect_ff.numpy)
         snk = blocks.vector_sink_f()
         
 
@@ -129,7 +128,7 @@ class test_multdivsel(gr_unittest.TestCase):
         src1 = blocks.vector_source_f(indata_1, False)
         src2 = blocks.vector_source_f(indata_2, False)
 
-        blk = multDivSelect_ff(True)
+        blk = grcon22.multDivSelect_ff(True, impl=grcon22.multDivSelect_ff.numpy)
         blk.set_select(False)        
         snk = blocks.vector_sink_f()
         
