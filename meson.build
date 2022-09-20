@@ -2,18 +2,36 @@
 ###############################################################################
 # If this is an OOT module, the following top level project things are needed
 ###############################################################################
-project('ns-grcon22', 'cpp', 
+project('gr4-grcon22', 'cpp', 
   version : '0.0.0',
   license : 'GPLv3',
   default_options : ['cpp_std=c++17'])
 
+# Import python3 meson module which is used to find the Python dependencies.
+# Python3 is required for code generation
+py3 = import('python').find_installation('python3')
+py3_version = py3.language_version()
+if py3_version.version_compare('< 3.6')
+  error('Invalid python version!?')
+endif
+
+GR_ENABLE_PYTHON = false
+if (get_option('enable_python'))
 python3_dep = dependency('python3', required : get_option('enable_python'))
 python3_embed_dep = dependency('python3-embed', required : get_option('enable_python'))
-py3_inst = import('python').find_installation('python3')
-py3 = py3_inst
 pybind11_dep = dependency('pybind11', required : get_option('enable_python'))
-json_dep = dependency('nlohmann_json')
+incdir_numpy = run_command(py3,
+  ['-c', 'import os; os.chdir(".."); import numpy; print(numpy.get_include())'],
+  check : true
+).stdout().strip()
 
+GR_ENABLE_PYTHON = true
+endif
+message('aads98fasd98fad99fa8hfd98fhad9a8hdfsa98dhffasdf')
+message(GR_ENABLE_PYTHON)
+
+py3 = import('python').find_installation('python3')
+json_dep = dependency('nlohmann_json')
 
 if (get_option('enable_testing'))
     TEST_ENV = environment()
@@ -57,8 +75,13 @@ if IMPLEMENT_CUDA
   cusp_dep = libcusp.get_variable('cusp_dep')
 endif
 
+if GR_ENABLE_PYTHON
+run_command('python3', join_paths(SCRIPTS_DIR,'gen_meson.py'), 
+  join_paths(meson.project_source_root(),'blocklib'), '--enable_python', check: true)
+else
 run_command('python3', join_paths(SCRIPTS_DIR,'gen_meson.py'), 
   join_paths(meson.project_source_root(),'blocklib'), check: true)
+endif
   
 subdir('blocklib/grcon22')
 

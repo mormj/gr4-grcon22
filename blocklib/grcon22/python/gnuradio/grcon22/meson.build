@@ -36,13 +36,13 @@ gen_grcon22_pybind = custom_target('gen_grcon22_pybind',
 
 grcon22_pybind_sources += gen_grcon22_pybind
 
-gnuradio_blocklib_grcon22_pybind = py3_inst.extension_module('grcon22_python',
+gnuradio_blocklib_grcon22_pybind = py3.extension_module('grcon22_python',
     grcon22_pybind_sources, 
-    include_directories: ['../../lib'],
+    include_directories: ['../../../lib'],
     dependencies : [gnuradio_blocklib_grcon22_dep, python3_dep, pybind11_dep],
     link_language : 'cpp',
     install : true,
-    install_dir : join_paths(py3_inst.get_install_dir(),'gnuradio','grcon22')
+    install_dir : join_paths(py3.get_install_dir(),'gnuradio','grcon22')
 )
 
 gnuradio_blocklib_grcon22_pybind_dep = declare_dependency(include_directories : incdir,
@@ -51,7 +51,7 @@ gnuradio_blocklib_grcon22_pybind_dep = declare_dependency(include_directories : 
 
 
 # Target for pure python
-py3_inst.install_sources(srcs, subdir : join_paths('gnuradio','grcon22'))
+py3.install_sources(srcs, subdir : join_paths('gnuradio','grcon22'))
 
 subdir('numpy')
-py3_inst.install_sources(files('numpy/__init__.py'), subdir : join_paths('gnuradio','grcon22','numpy'))
+py3.install_sources(files('numpy/__init__.py'), subdir : join_paths('gnuradio','grcon22','numpy'))
