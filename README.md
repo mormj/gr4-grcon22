@@ -4,7 +4,7 @@ Out of Tree Module for GRCon22 GR 4.0 Workshop
 
 ## Installing GNU Radio 4.0
 
-https://wiki.gnuradio.org/index.php?title=GNU_Radio_4.0#Creating_a_Prefix
+https://wiki.gnuradio.org/index.php?title=GNU_Radio_4.0
 
 ## Creating the OOT Module
 
